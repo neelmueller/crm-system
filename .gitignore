@@ -1,0 +1,19 @@
+# Abhängigkeiten
+node_modules/
+
+# Kompilierter Code
+dist/
+
+# Umgebungsvariablen (NIEMALS in Git!)
+.env
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
