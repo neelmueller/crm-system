@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  admin
+  customer
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique @db.VarChar(255)
+  password_hash      String
+  name               String
+  role               Role?
+  email_verified     Boolean?  @default(false)
+  verification_token String? @map("verfication_token")
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@map("users")
+}
+
+model SchemaMigration {
+  filename    String    @id
+  executed_at DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@map("schema_migrations")
+}
