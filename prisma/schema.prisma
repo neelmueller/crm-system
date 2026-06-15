@@ -7,21 +7,17 @@ datasource db {
   provider = "postgresql"
 }
 
-enum Role {
-  admin
-  customer
-}
-
 model User {
-  id                 Int       @id @default(autoincrement())
-  email              String    @unique @db.VarChar(255)
-  password_hash      String
-  name               String
-  role               Role?
-  email_verified     Boolean?  @default(false)
-  verification_token String? @map("verfication_token")
-  created_at         DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  id                    Int                     @id @default(autoincrement())
+  email                 String                  @unique @db.VarChar(255)
+  password_hash         String
+  name                  String
+  role                  String?
+  email_verified        Boolean?                @default(false)
+  verification_token    String?                 @map("verfication_token")
+  created_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  password_reset_tokens password_reset_tokens[]
 
   @@map("users")
 }
@@ -31,4 +27,14 @@ model SchemaMigration {
   executed_at DateTime? @default(now()) @db.Timestamptz(6)
 
   @@map("schema_migrations")
+}
+
+model password_reset_tokens {
+  id         Int       @id @default(autoincrement())
+  user_id    Int?
+  token_hash String?
+  expires_at DateTime? @default(now()) @db.Timestamptz(6)
+  used_at    DateTime? @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  users      User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
