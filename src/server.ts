@@ -2,9 +2,12 @@ import express from 'express';
 import {config} from "./config/env";
 import { query } from './config/database';
 import prisma from './config/prisma'
+import  authRouter from '././modules/auth/auth.controller'
 
 const app = express();
 const port = 3000;
+app.use(express.json())
+app.use('/auth', authRouter);
 
 async function startServer(){
     try {
@@ -13,7 +16,7 @@ async function startServer(){
             console.log('5. Server läuft');
         })
     } catch (error){
-        console.error('Fehler:', (error as Error).message);
+        console.error('Fehler:', error);
         process.exit(1);
     }
 }
@@ -23,5 +26,6 @@ console.log(config.port, config.node_env, config.database_url, config.jwt_secret
 
 app.get('/health', (req, res) => {
     res.send({status: 'ok', timpestemp: new Date()})
-})
+});
+
 
