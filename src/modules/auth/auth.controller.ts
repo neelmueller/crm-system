@@ -1,4 +1,4 @@
-import { register, login } from '../auth/auth.service'
+import { register, login, forgotPassword, resetPassword } from '../auth/auth.service'
 import { Router } from 'express'
 
 const router = Router();
@@ -33,13 +33,46 @@ router.post('/login', async (req, res) =>{
             httpOnly: true,
             secure: process.env.NODE_EN !== 'development',
             sameSite: 'strict',
-            maxAge: 7*24*60*60*100
+            maxAge: 7*24*60*60*1000
         } )
         res.status(200).json({message: 'Login erfolgreich'})
     }catch(error){
         res.status(400).json({message: (error as Error).message})
     }
 });
+
+router.post('/forgotPassword', async(req, res) =>{
+    const {email} = req.body
+    if(!email){
+        console.log('Email is wrong')
+        res.status(400);
+        throw new Error('Email is wrong')
+    }
+    try{
+        const userPasswordForgot = await forgotPassword(email);
+        res.status(200).json({message: 'Mail sucessfull'})
+    }catch(error){
+        res.status(400).json({
+            message: (error as Error).message
+        })
+    }
+});
+
+router.post('/resetPassword', async(req, res) =>{
+    const {newPassword, token} = req.body;
+    if(!newPassword || !token){
+        console.log('New Password or Token is not valid');
+        res.status(400);
+        throw new Error('New Password or Token is not valid');
+    }
+    try{
+        const userPasswordReset = await resetPassword(token, newPassword)
+    }catch(error){
+        res.status(400).json({
+            message: (error as Error).message
+        })
+    }
+})
 
 router.post('/logout', async (req, res ) =>{
     res.clearCookie('token',{
