@@ -1,7 +1,7 @@
 import prisma from '../../config/prisma';
 import { CreateAppointmentInput } from '../appointments/appointment.types';
 
-export async function createAppointment(customer_id: number, data: CreateAppointmentInput) {
+export async function createAppointment(customer_id: number, data: CreateAppointmentInput){
     const hour = new Date(data.scheduled_at).getHours();
     if (hour >= 22 || hour < 10) {
         throw new Error('Appointments can only be booked between 10:00 a.m. and 10:00 p.m.');
@@ -34,7 +34,7 @@ export async function createAppointment(customer_id: number, data: CreateAppoint
     });
 
     return newAppointment;
-}
+};
 
 export async function getCostumerAppointments(customer_id: number){
     const findCostumerAppointments = await prisma.appointments.findMany({
@@ -42,7 +42,7 @@ export async function getCostumerAppointments(customer_id: number){
         orderBy: { scheduled_at: 'desc' }
     })
     return findCostumerAppointments
-}
+};
 
 export async function cancelAppointment(appointment_id: number, customer_id: number){
     const findUniqueAppointmentId = await prisma.appointments.findUnique({
@@ -73,5 +73,4 @@ export async function cancelAppointment(appointment_id: number, customer_id: num
     }else{
         throw new Error('AppointmentCostumerId does not match with CostumerId');
     }
-   
-}
+};
