@@ -1,13 +1,16 @@
 import express from 'express';
 import {config} from "./config/env";
 import { query } from './config/database';
-import prisma from './config/prisma'
-import  authRouter from '././modules/auth/auth.controller'
+import authRouter from './modules/auth/auth.controller'
+import appointmentRouter from './modules/appointments/appointment.controller';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const port = 3000;
-app.use(express.json())
+app.use(express.json(), express.static('public'));
+app.use(cookieParser())
 app.use('/auth', authRouter);
+app.use('/appointments', appointmentRouter);
 
 async function startServer(){
     try {
@@ -21,8 +24,6 @@ async function startServer(){
     }
 }
 startServer();
-console.log(config.port, config.node_env, config.database_url, config.jwt_secret)
-
 
 app.get('/health', (req, res) => {
     res.send({status: 'ok', timpestemp: new Date()})
