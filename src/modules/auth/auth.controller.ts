@@ -3,8 +3,6 @@ import { Router } from 'express'
 
 const router = Router();
 
-export default router;
-
 router.post('/register', async (req, res) =>{
     const {email, password, name} = req.body;
     if(!name || !email || ! password){
@@ -73,7 +71,7 @@ router.post('/resetPassword', async(req, res) =>{
             message: (error as Error).message
         })
     }
-})
+});
 
 router.post('/logout', async (req, res ) =>{
     res.clearCookie('token',{
@@ -84,3 +82,5 @@ router.post('/logout', async (req, res ) =>{
     })
     .end();
 });
+
+export default router;

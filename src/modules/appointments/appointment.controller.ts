@@ -1,10 +1,8 @@
 import {cancelAppointment, createAppointment, getCostumerAppointments} from '../appointments/appointments.service';
 import { Router } from 'express'
 import { authenticateUser as authMiddleware } from '../../middleware/auth.middleware';
+
 const router = Router();
-
-export default router;
-
 
 router.post('/createAppointment', authMiddleware, async (req, res) => {
     const costumer_id = req.user?.userId;
@@ -36,7 +34,7 @@ router.patch('/cancelAppointment', authMiddleware ,async (req, res) => {
     }catch(error){
         res.status(400).json({message: (error as Error).message});
     }
-})
+});
 
 router.get('/getCostumerAppointments',authMiddleware, async (req, res) => {
     const costumer_id = req.user?.userId;
@@ -51,3 +49,5 @@ router.get('/getCostumerAppointments',authMiddleware, async (req, res) => {
         return res.status(400).json({ message: (error as Error).message });
     }
 });
+
+export default router;
