@@ -30,7 +30,7 @@ export async function register(name: string, email: string, password:string){
     const {password_hash, ...userWithoutPassword} = newUser
     return userWithoutPassword
     }   
-}
+};
 
 export async function login(email: string, password: string){
     const user = await prisma.user.findUnique({
@@ -46,7 +46,7 @@ export async function login(email: string, password: string){
         config.jwt_secret, 
         {expiresIn: '7d'})
     return token;
-}
+};
 
 export async function forgotPassword(email: string){
     const user = await prisma.user.findUnique({
@@ -70,7 +70,7 @@ export async function forgotPassword(email: string){
         }
     })
     console.log('Reset Token (nur für Entwicklung):', resetToken)
-}
+};
 
 export async function resetPassword(newPassword: string, token: string){
     const hash = await crypto.createHash('sha256').update(token).digest('hex')
@@ -92,4 +92,4 @@ export async function resetPassword(newPassword: string, token: string){
         where: { id: resetToken.id},
         data: {used_at: new Date()}
     })
-}
+};

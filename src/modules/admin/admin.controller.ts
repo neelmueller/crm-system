@@ -1,4 +1,4 @@
-import { getAllAppointments, updateAppointment, getAllCustomers } from "./admin.sevice";
+import { getAllAppointments, updateAppointment, getAllCustomers, blockDate, unblockDate, getBlockedDates } from "./admin.sevice";
 import { Router } from 'express'
 import { authenticateUser as authMiddleware } from '../../middleware/auth.middleware';
 import { requireRole } from "../../middleware/role.middleware";
@@ -44,4 +44,42 @@ router.get('/admin/costumers', authMiddleware, requireRole('admin'), async (req,
     }
 });
 
+router.post('/admin/blocked-dates', authMiddleware, requireRole('admin'), async (req, res) => {
+    const {blocked_date, reason} = req.body
+    if(!blocked_date || !reason){
+        console.log('Input is missing');
+        res.status(400);
+        throw new Error('Input is missing');
+    }
+    try{
+        const tryBlockDate = await blockDate(blocked_date, reason);
+        res.status(200).json('Date blocked successfull');
+    }catch(error){
+        res.status(400).json({ message: (error as Error).message });
+    }
+});
+
+router.delete('/admin/blocked-dates/:blocked_date', authMiddleware, requireRole('admin'), async (req, res) => {
+    const {blocked_date} = req.body;
+    if(!blockDate){
+        console.log('Input is missing');
+        res.status(400);
+        throw new Error('Input is missing');
+    }
+    try{
+        const deleteBlockDate = await unblockDate(blocked_date);
+        res.status(200).json('Get all Blocked Dates successfull');
+    }catch(error){
+        res.status(400).json({ message: (error as Error).message });
+    }
+});
+
+router.get('/admin/blocked-dates', authMiddleware, requireRole('admin'), async (req, res) => {
+    try{
+        const getAllBlockDates = getBlockedDates;
+        res.status(200).json('Get all Blocked Dates successfull');
+    }catch(error){
+        res.status(400).json({ message: (error as Error).message });
+    }
+});
 export default router;
