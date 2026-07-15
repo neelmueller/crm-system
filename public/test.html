@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TEST</title>
+    <link rel="stylesheet" href="test.css">
+</head>    
+<body>
+    <div class="login" id="box_login">
+        <p>Login</p>
+        <form id="login_submit">
+            <label for="login_email">Email:</label>
+            <input type="email" id="login_email" name="email" required>
+            <label for="login_password">Password:</label>
+            <input type="password" id="login_password" name="password" required>
+            <input type="submit" id="log_submit" value="Login">
+            <output id="log_output" for="log_submit"></output>
+        </form>
+        <button type="button" class="switch-btn" id="to_forgot">Forgot Password?</button>
+        <button type="button" class="switch-btn" id="to_register">No account? Register</button>
+    </div>
+
+    <div class="register" id="box_register" style="display: none;">
+        <p>Register</p>
+        <form id="register_submit">
+            <label for="register_name">Name:</label>
+            <input type="text" id="register_name" required>
+            <label for="register_email">Email:</label>
+            <input type="email" id="register_email" required>
+            <label for="register_password">Password:</label>
+            <input type="password" id="register_password" required>
+            <input type="submit" id="reg_submit" value="Register">
+            <output id="reg_output" for="reg_submit"></output>
+        </form>
+        <button type="button" class="switch-btn" id="reg_to_login">Back to Login</button>
+    </div>
+
+    <div class="forgotPassword" id="box_forgot" style="display: none;">
+        <p>Forgot Password</p>
+        <form id="forgotPassword_submit">
+            <label for="forgot_email">Forgot Password:</label>
+            <input type="email" id="forgot_email" required>
+            <input type="submit" id="forgot_submit" value="Send Token">
+            <output id="for_output" for="forgot_submit"></output>
+        </form>
+        <button type="button" class="switch-btn" id="forgot_to_login">Back to Login</button>
+    </div>
+
+    <div class="ResetPassword" id="box_reset" style="display: none;">
+        <p>Reset Password</p>
+        <form id="resetPassword_submit">
+            <label for="reset_password">Reset Password:</label>
+            <input type="password" id="reset_password" required>
+            <label for="reset_token">Reset Token</label>
+            <input type="text" id="reset_token" required>
+            <input type="submit" id='res_submit' value="ResetPassword">
+            <output id="res_output" for="res_submit"></output>
+        </form>
+    </div>
+    <div class="getAppointment" id="box_getAppointment">
+        <p>Get Appointment</p>
+        <button type="button" id="fetch_appointments">Fetch My Appointments</button>
+        <output id="appointments_output"></output>
+    </div>
+
+    <div class="createAppointment" id="box_create_appointment">
+        <p>Create Appointment</p>
+        <form id="create_appointment_form">
+            <label for="appointment_title">Title:</label>
+            <input type="text" id="appointment_title" name="title" required>
+
+            <label for="appointment_description">Description:</label>
+            <textarea id="appointment_description" name="description" required></textarea>
+
+            <label for="appointment_scheduled_at">Scheduled At:</label>
+            <input type="datetime-local" id="appointment_scheduled_at" name="scheduled_at" required>
+
+            <label for="appointment_duration">Duration (minutes):</label>
+            <input type="number" id="appointment_duration" name="duration_minutes" min="15" step="15" required>
+
+            <input type="submit" id="create_appointment_submit" value="Create Appointment">
+            <output id="create_appointment_output" for="create_appointment_submit"></output>
+        </form>
+    </div>
+
+    <script language="javascript" type="text/javascript" src="test.js"></script>
+</body>
+</html>

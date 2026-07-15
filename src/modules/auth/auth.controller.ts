@@ -13,7 +13,7 @@ router.post('/register', async (req, res) =>{
         throw new Error('Name, email or password is missing');
     }
     try {
-     const newUser = await register(email, password, name);
+     const newUser = await register(name, email, password);
         res.status(201).json({user: newUser})
     } catch (error) {
         res.status(400).json({ message: (error as Error).message})
@@ -29,12 +29,12 @@ router.post('/login', async (req, res) =>{
     }
     try{
         const exsistingUser = await login(email, password);
-        res.cookie('token', exsistingUser,{
-            httpOnly: true,
-            secure: process.env.NODE_EN !== 'development',
-            sameSite: 'strict',
-            maxAge: 7*24*60*60*1000
-        } )
+        res.cookie('token', exsistingUser, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== 'development',
+                    sameSite: 'strict',
+                    maxAge: 7 * 24 * 60 * 60 * 1000
+                    })
         res.status(200).json({message: 'Login erfolgreich'})
     }catch(error){
         res.status(400).json({message: (error as Error).message})
@@ -50,7 +50,7 @@ router.post('/forgotPassword', async(req, res) =>{
     }
     try{
         const userPasswordForgot = await forgotPassword(email);
-        res.status(200).json({message: 'Mail sucessfull'})
+        res.status(200).json({message: 'Mail sucessfull'});
     }catch(error){
         res.status(400).json({
             message: (error as Error).message
@@ -66,7 +66,8 @@ router.post('/resetPassword', async(req, res) =>{
         throw new Error('New Password or Token is not valid');
     }
     try{
-        const userPasswordReset = await resetPassword(token, newPassword)
+        const userPasswordReset = await resetPassword(newPassword, token );
+        res.status(201).json({message: 'Password change succesfull'})
     }catch(error){
         res.status(400).json({
             message: (error as Error).message

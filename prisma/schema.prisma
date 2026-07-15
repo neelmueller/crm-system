@@ -17,6 +17,7 @@ model User {
   verification_token    String?                 @map("verfication_token")
   created_at            DateTime?               @default(now()) @db.Timestamptz(6)
   updated_at            DateTime?               @default(now()) @db.Timestamptz(6)
+  appointments          appointments[]
   password_reset_tokens password_reset_tokens[]
 
   @@map("users")
@@ -37,4 +38,20 @@ model password_reset_tokens {
   used_at    DateTime? @db.Timestamptz(6)
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   users      User?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model appointments {
+  id               Int       @id @default(autoincrement())
+  customer_id      Int
+  title            String
+  description      String
+  scheduled_at     DateTime? @default(now()) @db.Timestamptz(6)
+  duration_minutes Int
+  status           String
+  price_offer      Decimal?  @db.Decimal
+  admin_notes      String?
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime? @default(now()) @db.Timestamptz(6)
+  users            User      @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
