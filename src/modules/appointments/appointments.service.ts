@@ -2,8 +2,15 @@ import prisma from '../../config/prisma';
 import { CreateAppointmentInput } from '../appointments/appointment.types';
 
 export async function createAppointment(customer_id: number, data: CreateAppointmentInput){
+    const checkBlockedDate = new Date(data.scheduled_at).toISOString().split('T')[0];
+    const isBlocked = await prisma.blocked_dates.findMany({
+      where: {
+        blocked_date: checkBlockedDate
+      }  
+    });
+    if(isBlocked){throw new Error('The Day is Blocked')}
     const hour = new Date(data.scheduled_at).getHours();
-    if (hour >= 22 || hour < 10) {
+    if(hour >= 22 || hour < 10) {
         throw new Error('Appointments can only be booked between 10:00 a.m. and 10:00 p.m.');
     }
 
